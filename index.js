@@ -1,18 +1,17 @@
-require('dotenv').config();
+require('custom-env').env('production');
 require('./models/User');
 require('./services/passport');
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
-const config = require('./config');
 const path = require('path');
 const app = express();
 
 mongoose.Promise = global.Promise;
 mongoose
   .connect(
-    config.mongoURI,
+    process.env.mongoURI,
     { useNewUrlParser: true }
   )
   .then(() => console.log('Connected to Mango'));
@@ -22,13 +21,14 @@ app.use(express.urlencoded());
 app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000,
-    keys: [config.cookieKey]
+    keys: [process.env.cookieKey]
   })
 );
 app.use(passport.initialize());
 app.use(passport.session());
 
 require('./routes/authRoutes')(app);
+require('./routes/faceRoute')(app);
 
 if (process.env.NODE_ENV === 'production') {
   // Express will serve up production assets
@@ -42,6 +42,6 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-app.listen(config.port, () =>
-  console.log(`Express server listening on localhost:${config.port}`)
+app.listen(process.env.port, () =>
+  console.log(`Express server listening on localhost: ${process.env.port}`)
 );

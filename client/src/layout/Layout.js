@@ -8,7 +8,7 @@ import Error from "./Error";
 
 const Layout = () => (
   <>
-    <Navbar />
+    <Navbar /> <br /><br /><br /><br /><br />
     <Switch>
       <Route path='/dashboard' component={Dashboard} />
       <Route path='/' component={News} exact />
