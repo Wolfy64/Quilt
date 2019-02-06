@@ -36,7 +36,7 @@ passport.use(
     }
   )
 );
-
+//FB Passport Login
 passport.use(
   new FacebookStrategy(
     {
